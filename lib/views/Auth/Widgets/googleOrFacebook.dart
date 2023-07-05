@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GoogleOrFacebook extends StatelessWidget {
 
@@ -22,8 +21,8 @@ class GoogleOrFacebook extends StatelessWidget {
         _onPressed!();
       },
       child: Container(
-          width: 170.h,
-          height: 54.w,
+          width: 170,
+          height: 54,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             border: Border.all(
@@ -35,11 +34,11 @@ class GoogleOrFacebook extends StatelessWidget {
           child: Row(
             children: [
               SizedBox(
-                width: 20.w,
+                width: 20,
               ),
-              Image.asset('$_image', width: 18.17.w, height: 18.17.h,),
+              Image.asset('$_image', width: 18.17, height: 18.17,),
               SizedBox(
-                width: 20.w,
+                width: 20,
               ),
               Text('$_text', style: TextStyle(fontSize: 16, color: _color),),
             ],

@@ -17,8 +17,8 @@ class BottonLogSign extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
           color: Color(0xffB28CFF),
         ),
-        width: 295.w,
-        height: 54.h,
+        width: 295,
+        height: 54,
         child: Center(child: Text('$_text', style: TextStyle(color: Colors.white, fontSize: 18,fontWeight: FontWeight.bold),)),
       ),
       onTap: () {

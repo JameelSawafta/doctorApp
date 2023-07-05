@@ -85,27 +85,26 @@ class ChatService extends ChangeNotifier {
   }
 
 
-  Future<String> getOtherUserName(String otherUserId) async {
-    String otherUserName = '';
+  Future<Map<String, dynamic>> getOtherUserData(String otherUserId) async {
+    Map<String, dynamic> otherUserData = {};
 
     // Check the "users" collection
     final userDocument =
     await _firestore.collection('users').doc(otherUserId).get();
-    if (userDocument.exists && userDocument.data()!.containsKey('name')) {
-      otherUserName = userDocument.data()!['name'];
+    if (userDocument.exists) {
+      otherUserData = userDocument.data()!;
     }
 
     // Check the "doctors" collection if the name is not found in "users"
-    if (otherUserName.isEmpty) {
+    if (otherUserData.isEmpty) {
       final doctorDocument =
       await _firestore.collection('doctors').doc(otherUserId).get();
-      if (doctorDocument.exists &&
-          doctorDocument.data()!.containsKey('name')) {
-        otherUserName = doctorDocument.data()!['name'];
+      if (doctorDocument.exists) {
+        otherUserData = doctorDocument.data()!;
       }
     }
 
-    return otherUserName;
+    return otherUserData;
   }
 
   getCurrentUserId() {

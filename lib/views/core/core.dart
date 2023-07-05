@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -12,6 +13,7 @@ import '../Home/homePage.dart';
 import '../chat/chatPage.dart';
 import '../chat/chatsPage.dart';
 import '../profile/profile.dart';
+import 'waitingPage.dart';
 
 class Core extends StatefulWidget {
   var initindex;
@@ -55,16 +57,16 @@ class _CoreState extends State<Core> {
   var user = FirebaseAuth.instance.currentUser;
 
 
-  var userref = FirebaseFirestore.instance.collection('users');
+
   Map<String,dynamic>? userData;
+
   getUserData() async {
-    await userref.doc(user!.uid).get().then((value) {
+    await FirebaseFirestore.instance.collection('users').doc(user!.uid).get().then((value) {
       userData = value.data();
     });
     setState(() {
 
     });
-
     //print(userData);
   }
 
@@ -99,11 +101,11 @@ class _CoreState extends State<Core> {
 
 
 
-  var pages = [
-    HomePage(),
-    AllDoctors(),
-    ChatsPage(),
-    Profile()
+  var pages = <Widget>[
+    WaitingPage(),
+    WaitingPage(),
+    WaitingPage(),
+    WaitingPage(),
   ];
 
   @override
@@ -111,16 +113,20 @@ class _CoreState extends State<Core> {
     super.initState();
     fetchQuotes().then((_) {
       getUserData().then((_) {
-        getAllDoctors().then((_) {
-          setState(() {
-            pages = [
-              HomePage(quote: quote,userData: userData,allDoctors: allDoctors,),
-              AllDoctors(allDoctors: allDoctors,userData: userData,),
-              ChatsPage(),
-              Profile()
-            ];
+        if (userData == null) {
+          Get.offAllNamed('/doctorCore');
+        } else {
+          getAllDoctors().then((_) {
+            setState(() {
+              pages = [
+                HomePage(quote: quote, userData: userData, allDoctors: allDoctors),
+                AllDoctors(allDoctors: allDoctors, userData: userData),
+                ChatsPage(),
+                Profile(userData: userData)
+              ];
+            });
           });
-        });
+        }
       });
     });
   }
@@ -139,7 +145,6 @@ class _CoreState extends State<Core> {
 
         items: [
           Icon(Icons.home),
-          //all doctors icon
           Icon(Icons.group_outlined),
           Icon(Icons.chat),
           Icon(Icons.person),

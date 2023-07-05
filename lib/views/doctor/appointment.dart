@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -84,10 +83,10 @@ class _AppointmentState extends State<Appointment> {
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
-              SizedBox(height: 20.h),
+              SizedBox(height: 20),
               Container(
-                height: 93.h,
-                width: 89.w,
+                height: 93,
+                width: 89,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(
@@ -95,7 +94,7 @@ class _AppointmentState extends State<Appointment> {
                       fit: BoxFit.cover),
                 ),
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 20),
               Text(
                 "Dr. ${widget.doctorData['name']}",
                 style: TextStyle(
@@ -104,7 +103,7 @@ class _AppointmentState extends State<Appointment> {
                   color: Color(0xff263257),
                 ),
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: 10),
               Text(
                 "${widget.doctorData['jobTitle']}",
                 style: TextStyle(
@@ -113,9 +112,9 @@ class _AppointmentState extends State<Appointment> {
                   color: Color(0xff263257),
                 ),
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 20),
               Container(
-                height: 106.h,
+                height: 106,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Color(0xffB28CFF),
@@ -124,8 +123,8 @@ class _AppointmentState extends State<Appointment> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      width: 104.w,
-                      height: 76.h,
+                      width: 104,
+                      height: 76,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
@@ -141,7 +140,7 @@ class _AppointmentState extends State<Appointment> {
                               color: Color(0xffB28CFF),
                             ),
                           ),
-                          SizedBox(height: 5.h),
+                          SizedBox(height: 5),
                           Text(
                             "Cost",
                             style: TextStyle(
@@ -154,8 +153,8 @@ class _AppointmentState extends State<Appointment> {
                       ),
                     ),
                     Container(
-                      width: 100.w,
-                      height: 76.h,
+                      width: 100,
+                      height: 76,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
@@ -171,7 +170,7 @@ class _AppointmentState extends State<Appointment> {
                               color: Color(0xff9DEAC0),
                             ),
                           ),
-                          SizedBox(height: 5.h),
+                          SizedBox(height: 5),
                           Text(
                             "Exp. years",
                             style: TextStyle(
@@ -184,8 +183,8 @@ class _AppointmentState extends State<Appointment> {
                       ),
                     ),
                     Container(
-                      width: 104.w,
-                      height: 76.h,
+                      width: 104,
+                      height: 76,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Colors.white,
@@ -201,7 +200,7 @@ class _AppointmentState extends State<Appointment> {
                               color: Color(0xffFF9A9A),
                             ),
                           ),
-                          SizedBox(height: 5.h),
+                          SizedBox(height: 5),
                           Text(
                             "Reviews",
                             style: TextStyle(
@@ -216,7 +215,7 @@ class _AppointmentState extends State<Appointment> {
                   ],
                 ),
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 20),
               //About Doctor
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -231,7 +230,7 @@ class _AppointmentState extends State<Appointment> {
                   ),
                 ],
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: 10),
               Text(
                 "Dr. ${widget.doctorData['name']} is the top most Cardiologist specialist in Nanyang Hospotalat London. She is available for private consultation.",
                 style: TextStyle(
@@ -240,7 +239,7 @@ class _AppointmentState extends State<Appointment> {
                   color: Color(0xff8A96BC),
                 ),
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 20),
               //Available Time
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -255,7 +254,7 @@ class _AppointmentState extends State<Appointment> {
                   ),
                 ],
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: 10),
               // use date picker timeline
               DatePicker(
                 DateTime.now(),
@@ -280,7 +279,7 @@ class _AppointmentState extends State<Appointment> {
                   });
                 },
               ),
-              SizedBox(height: 20.h),
+              SizedBox(height: 20),
               // visit hour
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -295,9 +294,9 @@ class _AppointmentState extends State<Appointment> {
                   ),
                 ],
               ),
-              SizedBox(height: 10.h),
+              SizedBox(height: 10),
               Container(
-                height: 200.h,
+                height: 200,
                 child: GridView.builder(
                   itemCount: widget.doctorData['date']["$numOfTheDay"].length,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -374,19 +373,6 @@ class _AppointmentState extends State<Appointment> {
                                         widget.doctorData = docSnapshot;
                                       });
                                     });
-                                    // Add the selected time to show them in the appointment doctor screen
-                                    FirebaseFirestore.instance
-                                        .collection("users")
-                                        .doc(FirebaseAuth.instance.currentUser!.uid)
-                                        .collection("appointments")
-                                        .add({
-                                      "doctorName": widget.doctorData['name'],
-                                      "doctorSpeciality": widget.doctorData['jobTitle'],
-                                      "doctorUid": widget.doctorData['uid'],
-                                      "date": selectedDate,
-                                      "time": selectedTime,
-                                      "note": note, // Include the note in the appointment data
-                                    });
                                     // add the selected time to show them in the appointment user screen
                                     FirebaseFirestore.instance
                                         .collection("doctors")
@@ -400,7 +386,6 @@ class _AppointmentState extends State<Appointment> {
                                       "date": selectedDate,
                                       "time": selectedTime,
                                       "note": note,
-
                                     });
                                   },
                                 ),

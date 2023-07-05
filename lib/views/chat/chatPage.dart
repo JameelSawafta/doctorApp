@@ -95,112 +95,124 @@ class _ChatPageState extends State<ChatPage> {
         backgroundColor: Color(0xff6527BE),
         title: Text('$otherUserName'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: _messagesStream,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-
-                final messages = snapshot.data!.docs;
-
-                WidgetsBinding.instance?.addPostFrameCallback((_) {
-                  _scrollToBottom();
-                });
-
-                return ListView.builder(
-                  physics: BouncingScrollPhysics(),
-                  controller: _scrollController,
-                  itemCount: messages.length,
-                  itemBuilder: (context, index) {
-                    final message =
-                    messages[index].data() as Map<String, dynamic>?;
-
-                    if (message == null) {
-                      return SizedBox.shrink();
-                    }
-
-                    final String? senderId = message['senderId'] as String?;
-                    final String? messageText =
-                    message['message'] as String?;
-                    final Timestamp? timestamp =
-                    message['time'] as Timestamp?;
-
-                    final bool isCurrentUser = senderId == widget.userId;
-
-                    return Align(
-                      alignment: isCurrentUser
-                          ? Alignment.centerRight
-                          : Alignment.centerLeft,
-                      child: Container(
-                        margin:
-                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                        padding: EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                          color: isCurrentUser ? Color(0xffB28CFF) : Colors.grey[300],
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              messageText ?? '',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 4.0),
-                            Text(
-                              timestamp != null
-                                  ? '${timestamp.toDate().hour.toString().padLeft(2, '0')}:${timestamp.toDate().minute.toString().padLeft(2, '0')}'
-                                  : '',
-                              style: TextStyle(
-                                fontSize: 10.0,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: _messagesStream,
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xff6527BE),
+                        backgroundColor: Color(0xffB28CFF),
                       ),
                     );
-                  },
-                );
-              },
+                  }
+
+                  final messages = snapshot.data!.docs;
+
+                  WidgetsBinding.instance?.addPostFrameCallback((_) {
+                    _scrollToBottom();
+                  });
+
+                  return ListView.builder(
+
+                    physics: BouncingScrollPhysics(),
+                    controller: _scrollController,
+                    itemCount: messages.length,
+                    itemBuilder: (context, index) {
+                      final message =
+                      messages[index].data() as Map<String, dynamic>?;
+
+                      if (message == null) {
+                        return SizedBox.shrink();
+                      }
+
+                      final String? senderId = message['senderId'] as String?;
+                      final String? messageText =
+                      message['message'] as String?;
+                      final Timestamp? timestamp =
+                      message['time'] as Timestamp?;
+
+                      final bool isCurrentUser = senderId == widget.userId;
+
+                      return Align(
+                        alignment: isCurrentUser
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        child: Container(
+                          margin:
+                          EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                          padding: EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                            color: isCurrentUser ? Color(0xffB28CFF) : Colors.grey[300],
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                messageText ?? '',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 4.0),
+                              Text(
+                                timestamp != null
+                                    ? '${timestamp.toDate().hour.toString().padLeft(2, '0')}:${timestamp.toDate().minute.toString().padLeft(2, '0')}'
+                                    : '',
+                                style: TextStyle(
+                                  fontSize: 10.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _messageController,
-                    decoration: InputDecoration(
-                      hintText: 'Type a message',
-                      border: OutlineInputBorder(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      onTap: () {
+                        WidgetsBinding.instance?.addPostFrameCallback((_) {
+                          _scrollToBottom();
+                        });
+                      },
+                      controller: _messageController,
+                      decoration: InputDecoration(
+                        hintText: 'Type a message',
+                        border: OutlineInputBorder(),
+                      ),
                     ),
                   ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.send),
-                  onPressed: () {
-                    final String message = _messageController.text.trim();
-                    if (message.isNotEmpty) {
-                      _sendMessage(message, widget.otherUserId);
-                    }
-                  },
-                ),
-              ],
+                  IconButton(
+                    icon: Icon(Icons.send),
+                    onPressed: () {
+                      final String message = _messageController.text.trim();
+                      if (message.isNotEmpty) {
+                        _sendMessage(message, widget.otherUserId);
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
+
     );
   }
 }

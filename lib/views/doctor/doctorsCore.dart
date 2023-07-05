@@ -12,7 +12,7 @@ import '../Home/homePage.dart';
 import '../chat/chatPage.dart';
 import '../chat/chatsPage.dart';
 import '../profile/profile.dart';
-import 'doctorChat.dart';
+import 'MachineLearning/cardiovascularDisease.dart';
 import 'doctorHome.dart';
 
 class DoctorsCore extends StatefulWidget {
@@ -29,71 +29,57 @@ class _DoctorsCoreState extends State<DoctorsCore> {
 
 
   var user = FirebaseAuth.instance.currentUser;
-  Map<String,dynamic>? userData;
 
-  var userref = FirebaseFirestore.instance.collection('users');
+  var doctorData;
+  var doctorRef = FirebaseFirestore.instance.collection('doctors');
 
-  getUserData() async {
-    await userref.doc(user!.uid).get().then((value) {
-      userData = value.data();
+  getDoctorData() async {
+    await doctorRef.doc(user!.uid).get().then((value) {
+      doctorData = value.data();
     });
     setState(() {
 
     });
-
-    //print(userData);
   }
 
-  var allDoctors;
-
-  // get all doctors data
-  getAllDoctors() async {
-    await FirebaseFirestore.instance.collection('doctors').get().then((value) {
-      allDoctors = value.docs;
-    });
-    setState(() {
-
-    });
-    // print(allDoctors[0].data());
+  Future<List<DocumentSnapshot>> _fetchAppointments() async {
+    var querySnapshot = await FirebaseFirestore.instance
+        .collection("doctors")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection("appointments")
+        .get();
+    return querySnapshot.docs;
   }
 
-  // get all users data
-  // getAllUsers() async {
-  //   await  FirebaseFirestore.instance.collection('users').get().then((value) {
-  //     value.docs.forEach((element) {
-  //       print(element.data());
-  //     });
-  //   });
-  // }
-
-
-
-
-
+  List<DocumentSnapshot> doctorAppointments = [];
 
 
 
 
   var pages = [
-    DoctorHome(),
+    DoctorHome( doctorAppointments: [],),
     ChatsPage(),
+    CardiovascularDisease(),
     Profile()
   ];
 
   @override
   void initState() {
     super.initState();
-      getUserData().then((_) {
-        getAllDoctors().then((_) {
-          setState(() {
-            pages = [
-              DoctorHome(),
-              ChatsPage(),
-              Profile()
-            ];
-          });
+
+    getDoctorData().then((_) {
+      _fetchAppointments().then((value) {
+        doctorAppointments = value;
+        setState(() {
+          pages = [
+            DoctorHome(doctorData: doctorData, doctorAppointments: doctorAppointments,),
+            ChatsPage(),
+            CardiovascularDisease(),
+            Profile(userData: doctorData)
+          ];
         });
       });
+    });
   }
 
 
@@ -112,6 +98,7 @@ class _DoctorsCoreState extends State<DoctorsCore> {
 
           Icon(Icons.calendar_today),
           Icon(Icons.chat),
+          Icon(Icons.medical_services),
           Icon(Icons.person),
         ],
         onTap: (index){
