@@ -4,12 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-
-
-import '../AllDoctors/alldoctors.dart';
-import '../Home/homePage.dart';
-import '../chat/chatPage.dart';
 import '../chat/chatsPage.dart';
 import '../profile/profile.dart';
 import 'MachineLearning/cardiovascularDisease.dart';

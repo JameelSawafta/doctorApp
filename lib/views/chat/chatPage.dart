@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 import '../../services/chatService.dart';
 
@@ -136,6 +137,9 @@ class _ChatPageState extends State<ChatPage> {
                       final Timestamp? timestamp =
                       message['time'] as Timestamp?;
 
+
+
+
                       final bool isCurrentUser = senderId == widget.userId;
 
                       return Align(
@@ -151,7 +155,9 @@ class _ChatPageState extends State<ChatPage> {
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
+                            crossAxisAlignment: isCurrentUser
+                                ? CrossAxisAlignment.end
+                                : CrossAxisAlignment.start,
                             children: [
                               Text(
                                 messageText ?? '',
@@ -163,7 +169,7 @@ class _ChatPageState extends State<ChatPage> {
                               SizedBox(height: 4.0),
                               Text(
                                 timestamp != null
-                                    ? '${timestamp.toDate().hour.toString().padLeft(2, '0')}:${timestamp.toDate().minute.toString().padLeft(2, '0')}'
+                                    ? '${DateFormat('dd MMM hh:mm').format(timestamp.toDate())}'
                                     : '',
                                 style: TextStyle(
                                   fontSize: 10.0,

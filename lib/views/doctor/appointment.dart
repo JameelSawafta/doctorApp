@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_paypal_checkout/flutter_paypal_checkout.dart';
+import 'package:DoctorApp/keys/keys.dart';
+
 
 import '../chat/chatPage.dart';
 
@@ -16,6 +19,9 @@ class Appointment extends StatefulWidget {
 }
 
 class _AppointmentState extends State<Appointment> {
+
+
+  final keys = Keys();
   var selectedDate = DateTime.now();
   int numOfTheDay = 1;
 
@@ -75,7 +81,8 @@ class _AppointmentState extends State<Appointment> {
               );
 
             },
-          ),],
+          ),
+        ],
       ),
       body: Container(
         padding: const EdgeInsets.all(20.0),
@@ -342,51 +349,101 @@ class _AppointmentState extends State<Appointment> {
                                 ),
                                 TextButton(
                                   child: Text('Confirm', style: TextStyle(color: Color(0xff9DEAC0))),
-                                  onPressed: () {
+                                  onPressed: () async {
                                     Navigator.of(context).pop();
 
                                     String note = noteController.text;
 
-                                    var updatedDateMap = Map<String, dynamic>.from(widget.doctorData['date']);
-                                    updatedDateMap["$numOfTheDay"] = FieldValue.arrayRemove([selectedTime]);
 
-                                    var updatedTimeList = List<String>.from(widget.doctorData['date']["$numOfTheDay"]);
-                                    updatedTimeList.remove(selectedTime);
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                    PaypalCheckout(
+                                      sandboxMode: true,
+                                      clientId: keys.paypalClientId,
+                                      secretKey: keys.paypalsecretKey,
+                                      returnURL: "success.snippetcoder.com",
+                                      cancelURL: "cancel.snippetcoder.com",
+                                      transactions:[
+                                        {
+                                          "amount": {
+                                            "total": '${widget.doctorData['cost']}',
+                                            "currency": "USD",
+                                            "details": {
+                                              "subtotal": '${widget.doctorData['cost']}',
+                                              "shipping": '0',
+                                              "shipping_discount": 0
+                                            }
+                                          },
+                                          "description": "The payment transaction description.",
+                                          "item_list": {
+                                            "items": [
+                                              {
+                                                "name": "Doctor Appointment for Dr. ${widget.doctorData['name']}",
+                                                "quantity": 1,
+                                                "price": '${widget.doctorData['cost']}',
+                                                "currency": "USD"
+                                              },
+                                            ],
+                                          }
+                                        }
+                                      ],
+                                      note: "PAYMENT_NOTE",
+                                      onSuccess: (Map params) async {
 
-                                    updatedDateMap["$numOfTheDay"] = updatedTimeList;
+                                        var updatedDateMap = Map<String, dynamic>.from(widget.doctorData['date']);
+                                        updatedDateMap["$numOfTheDay"] = FieldValue.arrayRemove([selectedTime]);
+
+                                        var updatedTimeList = List<String>.from(widget.doctorData['date']["$numOfTheDay"]);
+                                        updatedTimeList.remove(selectedTime);
+
+                                        updatedDateMap["$numOfTheDay"] = updatedTimeList;
 
 
 
-                                    FirebaseFirestore.instance
-                                        .collection("doctors")
-                                        .doc(widget.doctorData['uid'])
-                                        .update({
-                                      "date": updatedDateMap,
-                                    });
+                                        FirebaseFirestore.instance
+                                            .collection("doctors")
+                                            .doc(widget.doctorData['uid'])
+                                            .update({
+                                          "date": updatedDateMap,
+                                        });
 
-                                    FirebaseFirestore.instance
-                                        .collection("doctors")
-                                        .doc(widget.doctorData.id)
-                                        .get()
-                                        .then((docSnapshot) {
-                                      setState(() {
-                                        widget.doctorData = docSnapshot;
-                                      });
-                                    });
-                                    // add the selected time to show them in the appointment user screen
-                                    FirebaseFirestore.instance
-                                        .collection("doctors")
-                                        .doc(widget.doctorData.id)
-                                        .collection("appointments")
-                                        .add({
-                                      "patientName": widget.userData['name'],
-                                      "dateOfBirth": widget.userData['date'],
-                                      "phoneNumber": widget.userData['phone'],
-                                      "patientUid": FirebaseAuth.instance.currentUser!.uid,
-                                      "date": selectedDate,
-                                      "time": selectedTime,
-                                      "note": note,
-                                    });
+                                        FirebaseFirestore.instance
+                                            .collection("doctors")
+                                            .doc(widget.doctorData.id)
+                                            .get()
+                                            .then((docSnapshot) {
+                                          setState(() {
+                                            widget.doctorData = docSnapshot;
+                                          });
+                                        });
+                                        // add the selected time to show them in the appointment user screen
+                                        FirebaseFirestore.instance
+                                            .collection("doctors")
+                                            .doc(widget.doctorData.id)
+                                            .collection("appointments")
+                                            .add({
+                                          "patientName": widget.userData['name'],
+                                          "dateOfBirth": widget.userData['date'],
+                                          "phoneNumber": widget.userData['phone'],
+                                          "patientUid": FirebaseAuth.instance.currentUser!.uid,
+                                          "date": selectedDate,
+                                          "time": selectedTime,
+                                          "note": note,
+                                        });
+
+
+                                        print("onSuccess: $params");
+                                      },
+                                      onError: (error) {
+                                        print("onError: $error");
+                                        Navigator.pop(context);
+                                      },
+                                      onCancel: () {
+                                        print('cancelled:');
+                                      },
+                                    ),
+                                    ));
+
                                   },
                                 ),
                               ],

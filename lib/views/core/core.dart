@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:DoctorApp/keys/keys.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,6 +27,9 @@ class Core extends StatefulWidget {
 
 class _CoreState extends State<Core> {
 
+  final keys = Keys();
+
+
 
   var quote ;
 
@@ -34,7 +38,7 @@ class _CoreState extends State<Core> {
     // [{"quote": "It's wonderful that so many people want to contribute to fighting aids or malaria. But, if somebody isn't paying attention to the overall health system in the country, a whole lot of money can be wasted.", "author": "Paul Wolfowitz", "category": "health"}]
     final category = 'health';
     final apiURL = 'https://api.api-ninjas.com/v1/quotes?category=$category';
-    final apiKey = 'avqOH0vijCMMNXFnFpoL4Q==W6d7wgp1yriyBSdz';
+    final apiKey = keys.healthApiKey;
 
     final response = await http.get(
       Uri.parse(apiURL),

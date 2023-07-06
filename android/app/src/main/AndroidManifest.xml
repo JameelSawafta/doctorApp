@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sawafta.doctor">
+
     <application
         android:label="Doctor App"
         android:name="${applicationName}"

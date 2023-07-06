@@ -2,6 +2,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+
+import '../chat/chatPage.dart';
 
 
 class DoctorHome extends StatefulWidget {
@@ -69,6 +72,7 @@ class _DoctorHomeState extends State<DoctorHome> {
                     var phoneNumber = appointment["phoneNumber"];
                     var appointmentDate = appointment['date'];
                     var appointmentTime = appointment['time'];
+                    var patientUid = appointment['patientUid'];
                     var note = appointment['note'];
                     return ListTile(
                       title: Text("Patient: $patientName"),
@@ -76,11 +80,26 @@ class _DoctorHomeState extends State<DoctorHome> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text("Date: ${appointmentDate.toDate().toString().substring(0, 10)}"),
-                          Text("Time: $appointmentTime"),
+                          Text("Time: ${appointmentTime.toString().substring(0, 6)}"),
                           Text("Note: $note"),
                           Text("Date of Birth: $dateOfBirth"),
                           Text("Phone Number: $phoneNumber"),
                         ],
+                      ),
+                      trailing: IconButton(
+                        icon: Icon(
+                          Icons.chat,
+                          color: Color(0xff263257),
+                        ),
+                        onPressed: () {
+
+                          var currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
+                          Get.to(
+                              ChatPage(userId: currentUserId,otherUserId: patientUid,)
+                          );
+
+                        },
                       ),
                     );
                   },

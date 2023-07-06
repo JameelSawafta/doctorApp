@@ -13,6 +13,8 @@ class ChatService extends ChangeNotifier {
     final String currentUserEmail = _auth.currentUser!.email.toString();
     final Timestamp currentTime = Timestamp.now();
 
+
+
     Message newMessage = Message(
       senderId: currentUserId,
       senderEmail: currentUserEmail,
