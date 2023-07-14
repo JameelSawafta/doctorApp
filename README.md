@@ -1,8 +1,5 @@
 # Doctor App
 
-Doctor app
-
-## Getting Started
 
 ### User view
 
@@ -28,6 +25,7 @@ ML section
 
 
 [CardiovascularDiseaseClassification](https://github.com/JameelSawafta/CardiovascularDiseaseClassification)
+
 [ApiForCardiovascularDiseaseClassification](https://github.com/JameelSawafta/ApiForCardiovascularDiseaseClassification)
 
 
