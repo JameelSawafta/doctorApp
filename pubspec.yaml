@@ -49,6 +49,8 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_paypal_checkout: ^1.0.1
   flutter_inappwebview: ^5.7.2+3
+  flutter_animate: ^4.2.0
+  shimmer: ^3.0.0
 
 
 dev_dependencies:

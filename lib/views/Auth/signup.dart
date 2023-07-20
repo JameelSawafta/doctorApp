@@ -293,9 +293,10 @@ class _SignupState extends State<Signup> {
                     'doctor': false,
                   });
                   FirebaseAuth.instance.currentUser!.sendEmailVerification();
-                  Get.offAllNamed('/core');
+                  Get.offAllNamed('/loadingDataPage');
                 })
                     .catchError((error) {
+                  Get.snackbar('Error', error.message, backgroundColor: Colors.red, colorText: Colors.white);
                   print(error);
                 });
               },

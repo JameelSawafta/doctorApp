@@ -11,6 +11,7 @@ import 'views/Auth/signup.dart';
 import 'views/Home/homePage.dart';
 import 'views/AllDoctors/doctorsEachCategory.dart';
 import 'views/core/core.dart';
+import 'views/core/loadingDataPage.dart';
 import 'views/doctor/doctorHome.dart';
 import 'views/doctor/doctorsCore.dart';
 
@@ -25,10 +26,6 @@ import 'views/doctor/doctorsCore.dart';
 void main() async {
 
 
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Colors.transparent,
-    statusBarIconBrightness: Brightness.dark,
-  ));
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
@@ -66,11 +63,13 @@ class _MyAppState extends State<MyApp> {
 
     return GetMaterialApp(
 
+
+
       debugShowCheckedModeBanner: false,
       title: 'Doctor App',
       initialRoute:  user == null
           ? '/'
-          : '/core',
+          : '/loadingDataPage',
 
       getPages: [
         GetPage(
@@ -100,6 +99,10 @@ class _MyAppState extends State<MyApp> {
         GetPage(
           name: '/doctorCore',
           page: () => DoctorsCore(initindex: 0,),
+        ),
+        GetPage(
+          name: '/loadingDataPage',
+          page: () => LoadingDataPage(),
         ),
 
 

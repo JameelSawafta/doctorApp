@@ -185,17 +185,17 @@ class _LoginState extends State<Login> {
                       if (snapshot.size > 0) {
                         Get.offAllNamed('/doctorCore'); // Navigate to doctors core
                       } else {
-                        Get.offAllNamed('/core'); // Navigate to core
+                        Get.offAllNamed('/loadingDataPage'); // Navigate to loadingDataPage
                       }
                     }).catchError((e) {
                       print(e);
                       Get.snackbar(
-                          'Error retrieving user data', e.toString(),
+                          'Error retrieving user data', "Please try again later",
                           backgroundColor: Colors.red, colorText: Colors.white);
                     });
                   }).catchError((e) {
                     print(e);
-                    Get.snackbar('Error login account', e.toString(),
+                    Get.snackbar('Error login account', "Please check your email and password",
                         backgroundColor: Colors.red, colorText: Colors.white);
                   });
                 },
@@ -215,7 +215,8 @@ class _LoginState extends State<Login> {
                               Get.snackbar('Reset password', 'Please check your email', backgroundColor: Colors.green, colorText: Colors.white);
                             }).catchError((e) {
                               print(e);
-                              Get.snackbar('Error reset password', e.toString(), backgroundColor: Colors.red, colorText: Colors.white);
+                              Get.snackbar('Error reset password', "Please enter a valid email",
+                                  backgroundColor: Colors.red, colorText: Colors.white);
                             });
 
                           },
@@ -229,7 +230,7 @@ class _LoginState extends State<Login> {
                         ),
                         SizedBox(width: 5,),
                         InkWell(
-                          child: Text('Join us', style: TextStyle(fontSize: 14, color: Color(0xff263257), fontWeight: FontWeight.bold),
+                          child: Text('Join us', style: TextStyle(fontSize: 14, color: Color(0xff7563F7), fontWeight: FontWeight.bold),
                           ),
                           onTap: () {
                             Get.offAllNamed('/signup');

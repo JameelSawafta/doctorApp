@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BottonLogSign extends StatelessWidget {
   String? _text;
@@ -11,19 +10,28 @@ class BottonLogSign extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Color(0xffB28CFF),
+    return SizedBox(
+      width: 295,
+      height: 54,
+      child: ElevatedButton(
+        onPressed: (){
+          _onPressed!();
+        },
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          primary: Color(0xffB28CFF),
         ),
-        width: 295,
-        height: 54,
-        child: Center(child: Text('$_text', style: TextStyle(color: Colors.white, fontSize: 18,fontWeight: FontWeight.bold),)),
+        child: Text(
+          "$_text",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
-      onTap: () {
-        _onPressed!();
-      },
     );
   }
 }
