@@ -243,11 +243,19 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   CircleAvatar(
                                     radius: 40,
-                                    backgroundImage: NetworkImage(
-                                      widget.allDoctors?[index]['photo'] ??
-                                          "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png",
-                                    ),
+                                    backgroundImage: widget.allDoctors?[index]['photo'] == null
+                                        ? AssetImage('images/person.png')
+                                        : Image.network(
+                                      widget.allDoctors?[index]['photo'],
+                                      loadingBuilder: (context, child, loadingProgress) {
+                                        if (loadingProgress == null) return child;
+                                        return Image.asset('images/person.png', width: 70, height: 70);
+                                      },
+                                      errorBuilder: (context, error, stackTrace) =>
+                                          Image.asset('images/person.png', width: 70, height: 70),
+                                    ).image,
                                   ),
+
                                   SizedBox(height: 12,),
                                   Text(
                                     widget.allDoctors?[index]['name'] ?? "",
@@ -320,11 +328,22 @@ class _HomePageState extends State<HomePage> {
                                   children: [
                                     CircleAvatar(
                                       radius: 40,
-                                      backgroundImage: NetworkImage(
-                                        widget.allDoctors?[index]['photo'] ??
-                                            "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png",
-                                      ),
+                                      backgroundImage: widget.allDoctors?[index]['photo'] == null
+                                          ? AssetImage('images/person.png')
+                                          : Image.network(
+                                        widget.allDoctors?[index]['photo'],
+                                        loadingBuilder: (context, child, loadingProgress) {
+                                          if (loadingProgress == null) return child;
+                                          return Image.asset('images/person.png', width: 70, height: 70);
+                                        },
+                                        errorBuilder: (context, error, stackTrace) =>
+                                            Image.asset('images/person.png', width: 70, height: 70),
+                                      ).image,
                                     ),
+
+
+
+
                                     SizedBox(height: 12,),
                                     Text(
                                       widget.allDoctors?[index]['name'] ?? "",

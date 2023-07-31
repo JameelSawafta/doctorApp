@@ -239,7 +239,7 @@ class _AppointmentState extends State<Appointment> {
               ),
               SizedBox(height: 10),
               Text(
-                "Dr. ${widget.doctorData['name']} is the top most Cardiologist specialist in Nanyang Hospotalat London. She is available for private consultation.",
+                "Dr. ${widget.doctorData['name']} He is one of the best ${widget.doctorData['jobTitle']}. He is available for private consultation.",
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
@@ -345,6 +345,7 @@ class _AppointmentState extends State<Appointment> {
                                   child: Text('Cancel', style: TextStyle(color: Color(0xffFF9A9A))),
                                   onPressed: () {
                                     Navigator.of(context).pop();
+                                    noteController.clear();
                                   },
                                 ),
                                 TextButton(
@@ -353,7 +354,7 @@ class _AppointmentState extends State<Appointment> {
                                     Navigator.of(context).pop();
 
                                     String note = noteController.text;
-
+                                    noteController.clear();
 
                                     Navigator.of(context).push(MaterialPageRoute(
                                       builder: (BuildContext context) =>

@@ -75,7 +75,6 @@ class _ChatPageState extends State<ChatPage> {
 
   void _sendMessage(String message, String receiverId) {
     _chatService.sendMessage(message, receiverId).then((_) {
-      _messageController.clear();
     }).catchError((error) {
       print('Failed to send message: $error');
     });
@@ -207,6 +206,7 @@ class _ChatPageState extends State<ChatPage> {
                     icon: Icon(Icons.send),
                     onPressed: () {
                       final String message = _messageController.text.trim();
+                      _messageController.clear();
                       if (message.isNotEmpty) {
                         _sendMessage(message, widget.otherUserId);
                       }

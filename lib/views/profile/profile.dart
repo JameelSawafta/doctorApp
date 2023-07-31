@@ -133,10 +133,11 @@ class _ProfileState extends State<Profile> {
             children: [
               CircleAvatar(
                 radius: 80,
-                backgroundImage: NetworkImage(
-                  widget.userData['photo'] ??
-                      'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
-                ),
+                backgroundImage: widget.userData['photo'] == null
+                    ? AssetImage('images/person.png')
+                    : NetworkImage(
+                  widget.userData['photo'],
+                )as ImageProvider<Object>?,
               ),
               SizedBox(height: 16),
               Text(

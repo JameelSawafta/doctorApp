@@ -137,14 +137,24 @@ class _ChatsPageState extends State<ChatsPage> {
                         leading: CircleAvatar(
                           backgroundColor: Colors.grey,
                           child: ClipOval(
-                            child: Image.network(
-                              otherUserData['photo'] ?? 'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png',
+                            child: otherUserData['photo'] == null
+                                ? Image.asset('images/person.png',
+                              fit: BoxFit.cover,
+                              width: 50,
+                              height: 50,
+                            )
+                                : Image.network(
+                              otherUserData['photo'],
                               fit: BoxFit.cover,
                               width: 50,
                               height: 50,
                             ),
                           ),
                         ),
+
+
+
+
                         onTap: () {
                           Get.to(
                             ChatPage(

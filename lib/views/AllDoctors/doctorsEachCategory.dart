@@ -78,16 +78,18 @@ class _DoctorsEachCategoryState extends State<DoctorsEachCategory> {
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Container(
-                                    height: 70,
+                                  widget.doctorsCategory?[index]['photo'] == null
+                                      ? Image.asset('images/person.png', width: 70, height: 70)
+                                      : Image.network(
+                                    widget.doctorsCategory?[index]['photo'],
                                     width: 70,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        image: DecorationImage(
-                                            image: NetworkImage(widget.doctorsCategory?[index]['photo'] ?? "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png"),
-                                            fit: BoxFit.cover
-                                        )
-                                    ),
+                                    height: 70,
+                                    loadingBuilder: (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return Image.asset('images/person.png', width: 70, height: 70);
+                                    },
+                                    errorBuilder: (context, error, stackTrace) =>
+                                        Image.asset('images/person.png', width: 70, height: 70),
                                   ),
                                   SizedBox(width: 10,),
                                   Container(
@@ -231,7 +233,21 @@ class DataSearch extends SearchDelegate{
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.network(filteredNames[index]['photo'] ?? "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png",height: 70,width: 70,),
+                        filteredNames[index]['photo'] == null
+                            ? Image.asset('images/person.png', width: 70, height: 70)
+                            : Image.network(
+                          filteredNames[index]['photo'],
+                          width: 70,
+                          height: 70,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Image.asset('images/person.png', width: 70, height: 70);
+                          },
+                          errorBuilder: (context, error, stackTrace) =>
+                              Image.asset('images/person.png', width: 70, height: 70),
+                        ),
+
+
                         SizedBox(width: 10,),
                         Container(
                           child: Column(
@@ -339,8 +355,19 @@ class DataSearch extends SearchDelegate{
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Image.network(filteredNames[index]['photo'] ?? "https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png",height: 70,width: 70,),
-                        SizedBox(width: 10,),
+                        filteredNames[index]['photo'] == null
+                            ? Image.asset('images/person.png', width: 70, height: 70)
+                            : Image.network(
+                          filteredNames[index]['photo'],
+                          width: 70,
+                          height: 70,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Image.asset('images/person.png', width: 70, height: 70);
+                          },
+                          errorBuilder: (context, error, stackTrace) =>
+                              Image.asset('images/person.png', width: 70, height: 70),
+                        ),                        SizedBox(width: 10,),
                         Container(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
